@@ -15,6 +15,15 @@
   {% endif %}
   {% if request.user.is_authenticated %}
     <!-- 댓글 작성 폼-->
+    <form action="{% url 'reviews:comments_create' review.pk %}" method="post">
+      {% csrf_token %}
+      {% bootstrap_form comment_form %}
+      <input type="submit" class='btn btn-primary'>
+    </form>
   {% endif %}
-    {% comment %} 댓글목록 {% endcomment %}
+  {% for comment in comments %}
+    <p>{{ request.user }}||{{ comment.content }}</p>
+    {% empty %}
+    <p>아직 댓글이 없습니다. 첫 댓글을 작성해보세요!</p>
+  {% endfor %}
 {% endblock content %}
