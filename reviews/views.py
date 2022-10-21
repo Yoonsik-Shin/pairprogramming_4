@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .models import Review
 from .forms import ReviewForm
 from django.contrib.auth.decorators import login_required
@@ -12,6 +12,7 @@ def create(request):
             review = review_form.save(commit=False)
             review.user = request.user
             review.save()
+            return redirect('reviews:index')
     else:
         review_form = ReviewForm()
     context = {
@@ -25,3 +26,10 @@ def index(request):
         'reviews': reviews,
     }
     return render(request, 'reviews/index.html', context)
+
+def detail(request, review_pk):
+    review = Review.objects.get(pk=review_pk)
+    context = {
+        'review': review,
+    }
+    return render(request, 'reviews/detail.html', context)
