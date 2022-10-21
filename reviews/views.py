@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render, get_object_or_404
-from .models import Review
-from .forms import ReviewForm
+from .models import Review, Comment
+from .forms import ReviewForm, CommentForm
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -29,8 +29,12 @@ def index(request):
 
 def detail(request, review_pk):
     review = Review.objects.get(pk=review_pk)
+    comments = Comment.objects.all()
+    comment_form = CommentForm()
     context = {
         'review': review,
+        'comments': comments,
+        'comment_form': comment_form,
     }
     return render(request, 'reviews/detail.html', context)
 
@@ -50,6 +54,18 @@ def update(request, review_pk):
     }
     return render(request, 'reviews/form.html', context)
 
+@login_required
 def delete(request, review_pk):
     Review.objects.get(pk=review_pk).delete()
     return redirect('reviews:index')
+
+@login_required
+def comments_create(request, review_pk):
+    review = Review.objects.get(pk=review_pk)
+    comment_form = CommentForm(request.POST)
+    if request.method == 'POST':
+        comment = comment_form.save(commit=False)
+        comment.review = review
+        comment.user = request.user
+        comment.save()
+    return redirect('reviews:detail',review_pk)
