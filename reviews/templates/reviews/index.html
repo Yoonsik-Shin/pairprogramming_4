@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+  {% for review in reviews %}
+    {{ review.user }}|
+    {{ review.title }}|
+    {{ review.content }}|
+    {{ review.movie_name }}|
+    {{ review.grade }}|
+    {{ review.updated_at }}|
+  {% endfor %}
+{% endblock content %}
