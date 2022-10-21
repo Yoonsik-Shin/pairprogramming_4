@@ -2,10 +2,20 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-  <h1>글쓰기</h1>
+  {% if request.resolver_match.url_name == 'create' %}
+    <h1>리뷰작성하기</h1>
+  {% else %}
+    <h1>리뷰수정하기</h1>
+  {% endif %}
+
   <form action="" method="post">
     {% csrf_token %}
     {% bootstrap_form review_form %}
-    <input type="submit" value="작성">
+
+    {% if request.resolver_match.url_name == 'create' %}
+      {% bootstrap_button content='리뷰작성' button_type='submit' button_class="btn-primary" %}
+    {% else %}
+      {% bootstrap_button content='수정하기' button_type='submit' button_class="btn-primary" %}
+    {% endif %}
   </form>
 {% endblock content %}
