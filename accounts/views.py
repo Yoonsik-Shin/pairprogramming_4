@@ -28,3 +28,7 @@ def login(request):
         'login_form': login_form,
     }
     return render(request, 'accounts/login.html', context)
+
+def logout(request):
+    auth_logout(request)
+    return redirect('accounts:login')
