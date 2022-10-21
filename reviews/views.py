@@ -49,3 +49,7 @@ def update(request, review_pk):
         'review': review,
     }
     return render(request, 'reviews/form.html', context)
+
+def delete(request, review_pk):
+    Review.objects.get(pk=review_pk).delete()
+    return redirect('reviews:index')
