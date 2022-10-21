@@ -11,7 +11,8 @@ def signup(request):
         if signup_form.is_valid():
             signup_form.save()
             return redirect('accounts:signup')
-    signup_form = CustomUserCreationForm()
+    else:
+        signup_form = CustomUserCreationForm()
     context = {
         'signup_form': signup_form,
     }
@@ -23,7 +24,8 @@ def login(request):
         if login_form.is_valid():
             auth_login(request, login_form.get_user())
             return redirect(request.GET.get('next') or 'accounts:login')
-    login_form = AuthenticationForm()
+    else:
+        login_form = AuthenticationForm()
     context = {
         'login_form': login_form,
     }
