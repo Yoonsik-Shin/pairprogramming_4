@@ -22,8 +22,13 @@
     </form>
   {% endif %}
   {% for comment in comments %}
-    <p>{{ request.user }}||{{ comment.content }}</p>
-    {% empty %}
-    <p>아직 댓글이 없습니다. 첫 댓글을 작성해보세요!</p>
-  {% endfor %}
-{% endblock content %}
+    <p>
+      {{ request.user }}||{{ comment.content }}
+      {% if request.user.pk == comment.user.pk %}
+        <a href="{% url 'reviews:comments_delete' review.pk comment.pk %}" class="btn btn-primary">댓글 삭제</a>
+        {% endif%}
+      </p>
+      {% empty %}
+      <p>아직 댓글이 없습니다. 첫 댓글을 작성해보세요!</p>
+    {% endfor %}
+  {% endblock content %}
