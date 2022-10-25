@@ -69,3 +69,8 @@ def comments_create(request, review_pk):
         comment.user = request.user
         comment.save()
     return redirect('reviews:detail',review_pk)
+
+@login_required
+def comments_delete(request, review_pk, comment_pk):
+    Comment.objects.get(pk=comment_pk).delete()
+    return redirect('reviews:detail', review_pk)
